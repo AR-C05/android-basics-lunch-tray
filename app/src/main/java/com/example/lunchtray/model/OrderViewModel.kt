@@ -141,9 +141,16 @@ class OrderViewModel : ViewModel() {
     private fun updateSubtotal(itemPrice: Double) {
         // TODO: if _subtotal.value is not null, update it to reflect the price of the recently
         //  added item.
+        if (_subtotal.value != null) {
+            _subtotal.value = _subtotal.value!! + itemPrice
+        } else {
+            _subtotal.value = itemPrice
+        }
+
         //  Otherwise, set _subtotal.value to equal the price of the item.
 
         // TODO: calculate the tax and resulting total
+        calculateTaxAndTotal()
     }
 
     /**
@@ -151,7 +158,10 @@ class OrderViewModel : ViewModel() {
      */
     fun calculateTaxAndTotal() {
         // TODO: set _tax.value based on the subtotal and the tax rate.
+        _tax.value = _subtotal.value!! * taxRate
+
         // TODO: set the total based on the subtotal and _tax.value.
+        _total.value = _subtotal.value!! + _tax.value!!
     }
 
     /**
@@ -159,5 +169,16 @@ class OrderViewModel : ViewModel() {
      */
     fun resetOrder() {
         // TODO: Reset all values associated with an order
+        previousEntreePrice = 0.0
+        previousSidePrice = 0.0
+        previousAccompanimentPrice = 0.0
+
+        _entree.value = null
+        _side.value = null
+        _accompaniment.value = null
+
+        _subtotal.value = 0.0
+        _tax.value = 0.0
+        _total.value = 0.0
     }
 }
